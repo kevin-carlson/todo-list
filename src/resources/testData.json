@@ -1,0 +1,36 @@
+{
+  "userName": "Jerry",
+  "todoItems": [
+    {
+      "text": "Wash Dishes",
+      "date": "20210605",
+      "memo": "just a reminder that I need to do the dishes",
+      "completed": "false",
+      "pinned": "false"
+    },
+    {
+      "text": "Drink Coffee",
+      "date": "20210606",
+      "memo": "drink coffee so you don't get sleepy",
+      "completed": "true",
+      "pinned": "false"
+
+    },
+    {
+      "text": "Shower",
+      "date": "20210605",
+      "memo": "",
+      "completed": "false",
+      "pinned": "true"
+
+    },
+    {
+      "text": "Have fun",
+      "date": "20210605",
+      "memo": "Do what you enjoy",
+      "completed": "false",
+      "pinned": "false"
+
+    }
+  ]
+}
