@@ -17,11 +17,6 @@ const dataDomain = 'localhost';
 
 const contentRecord = new ContentRecordDAC();
 
-const useStyles = makeStyles({
-  loginDiv: {
-    alignItems:'center'
-  }
-});
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -118,7 +113,6 @@ function App() {
         ]
       };
       setUserData(initJSON);
-      //dataDomain+'/path/test.json'
       const {data, dataLink } = await mySky.setJSON(dataDomain+'/path/'+usrID.toString()+'.json', initJSON);
       //setOpenModal(true);
       setLoggedIn(true);
@@ -161,7 +155,6 @@ function App() {
     }
 
   }
-  const classes = useStyles();
   return (
       <ThemeProvider theme={currentTheme}>
         <Container maxWidth={false}>
