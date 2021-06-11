@@ -99,9 +99,8 @@ export default function TabPanel (props) {
         currentDate = new Date();
         if (value == 1) {
             currentDate.setHours(0,0,0);
-            setDateString(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
-            //weekDate.setHours(0,0,0);
         }
+        setDateString(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
         weekDate.setDate(currentDate.getDate()+6);
     }, [value]);
 

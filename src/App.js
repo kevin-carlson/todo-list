@@ -12,8 +12,8 @@ import logo from './resources/tasky_logo.png';
 
 const portal = window.location.hostname === 'localhost' ? 'https://siasky.net' : undefined;
 const client = new SkynetClient(portal);
-const hostApp = 'localhost';
-const dataDomain = 'localhost';
+const hostApp = 'tasky';
+const dataDomain = 'tasky';
 
 const contentRecord = new ContentRecordDAC();
 
@@ -129,7 +129,7 @@ function App() {
 
 
   const initiateLogin = async () => {
-    await mySky.addPermissions(new Permission('localhost', 'localhost/path', PermCategory.Discoverable, PermType.Write));
+    await mySky.addPermissions(new Permission('tasky', 'tasky/path', PermCategory.Discoverable, PermType.Write));
     mySky.requestLoginAccess().then(async result => {
       if (result) {
         setLoading(true);
