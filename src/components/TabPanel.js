@@ -46,8 +46,11 @@ const useStyles = makeStyles((theme) => ({
             '& > * + *': {
                 marginLeft: theme.spacing(2),
             },
-        }
+        },
     },
+    container: {
+        backgroundColor: theme.palette.background.paper
+    }
 }));
 
 export default function TabPanel (props) {
@@ -245,7 +248,7 @@ export default function TabPanel (props) {
             currentDate.setDate(currentDate.getDate() + 7);
         } else if (index==2) {
             currentDate.setMonth(currentDate.getMonth() + 1);
-
+            setDisplayMonth(months[currentDate.getMonth()]);
         } else {
             currentDate.setFullYear(currentDate.getFullYear() + 1);
         }
@@ -255,7 +258,7 @@ export default function TabPanel (props) {
     }
 
     return (
-        <div hidden={value != index} style={{backgroundColor:'white'}}>
+        <Container className={classes.container} hidden={value != index} style={{marginTop:2}}>
             <Grid container justify={'space-around'}>
                     <IconButton onClick={handleDateDecrement}
                             aria-describedby={'simple'}
@@ -491,7 +494,7 @@ export default function TabPanel (props) {
             ):null}
 
 
-        </div>
+        </Container>
 
     )
 }
