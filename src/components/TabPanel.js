@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 let currentDate = new Date();
 let weekDate = new Date();
-weekDate.setDate(currentDate.getDate()+7);
+weekDate.setDate(currentDate.getDate()+6);
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 //const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -75,13 +75,11 @@ export default function TabPanel (props) {
     //date displays
     const [dateString, setDateString] = useState(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
     const [displayMonth, setDisplayMonth] = useState(months[currentDate.getMonth()]);
-    //const [weekDate, setWeekDate] = useState(new Date().setDate(currentDate.getDate()+7));
 
     useEffect(() => {
-        //console.log('date string', dateString);
         //here we retrieve json with the users list of to-dos
-        //console.log('DATA: ', props.data[0]);
         setData(props.data);
+        setNoTodo(true);
         if (props.data[0]!=null) {
             if (props.data[0].pinned!=null){
                 setLoading(false);
@@ -99,20 +97,21 @@ export default function TabPanel (props) {
         setTaskMemo(null);
         setTaskText(null);
         currentDate = new Date();
-        weekDate.setDate(currentDate.getDate()+7);
+        if (value == 1) {
+            currentDate.setHours(0,0,0);
+            setDateString(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
+            //weekDate.setHours(0,0,0);
+        }
+        weekDate.setDate(currentDate.getDate()+6);
     }, [value]);
 
     const checkDate = (d) => {
         //check if the date for the item fits within the tabs timeframe
         //ie day, week, month, or year
         const displayDate = currentDate.toLocaleDateString(undefined, options);
-        //console.log(displayDate);
         const dateArr = displayDate.split(', ', 3);
         const d1 = new Date(d);
-        //console.log('DATTTETEEE', d1.toLocaleDateString(undefined, options));
         const taskDateArr = d1.toLocaleDateString(undefined, options).split(', ', 3);
-        //console.log('DATE ARR', dateArr);
-        //console.log('TASK ARR', taskDateArr);
         if (index==0) {
             //we are on the daily view
             if (dateArr[0]==taskDateArr[0] && dateArr[1]==taskDateArr[1] && dateArr[2]==taskDateArr[2]) {
@@ -134,13 +133,11 @@ export default function TabPanel (props) {
                 return true;
             }
         }
-
         //return true;
 
     }
 
     const handleDateChange = (date) => {
-        console.log('DATE SELECT: ', date.toLocaleDateString(undefined, options));
         setTaskDate(date);
     }
     const handleTimeChange = () => {
@@ -168,10 +165,8 @@ export default function TabPanel (props) {
                 ongoing: isOngoing,
                 completed: false
             }
-            console.log('TASKJSON: ', taskJSON);
             //insert to top of to do list
             let dataNew = [taskJSON].concat(data);
-            console.log('NEW Data: ', dataNew);
             setData(dataNew);
             setNoTodo(false);
             setLoading(false);
@@ -179,7 +174,7 @@ export default function TabPanel (props) {
             setTaskText(null);
             setTaskMemo(null);
             setTaskDate(new Date());
-            document.getElementById('new-task-form').reset();
+            document.getElementById('new-task-form'+index.toString()).reset();
 
             //update with mySky
             updateMySky(dataNew, 'addTodoItem');
@@ -187,10 +182,8 @@ export default function TabPanel (props) {
 
     }
     const handleDeleteTask = (index) => {
-        console.log('index', index);
         let dataNew = data;
         dataNew.splice(index, 1);
-        console.log('DATA NEW: ', dataNew);
         setMenuIndex(0);
         if (dataNew.length == 0) {
             setNoTodo(true);
@@ -204,7 +197,6 @@ export default function TabPanel (props) {
         let dataNew = data;
         dataNew[index].pinned = !data[index].pinned;
         setData([...dataNew]);
-        console.log('DATA NEW', dataNew);
         setPopAnchor(null);
         updateMySky(dataNew, 'pinnedTodoItem');
     }
@@ -220,7 +212,6 @@ export default function TabPanel (props) {
         setTaskMemo(event.target.value);
     }
     const handleAddMemo = () => {
-        console.log('MEMO', taskMemo);
         let dataNew = data;
         dataNew[menuIndex].memo = taskMemo;
         setData([...dataNew]);
@@ -234,14 +225,13 @@ export default function TabPanel (props) {
             currentDate.setDate(currentDate.getDate() - 1);
         } else if (index==1) {
             currentDate.setDate(currentDate.getDate() - 7);
-            weekDate.setDate(currentDate.getDate() + 7);
+            weekDate.setDate(currentDate.getDate() + 6);
         } else if (index==2) {
             currentDate.setMonth(currentDate.getMonth() - 1);
             setDisplayMonth(months[currentDate.getMonth()]);
         } else {
             currentDate.setFullYear(currentDate.getFullYear() - 1);
         }
-        console.log('yester: ', currentDate);
         setDateString(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
     }
     const handleDateIncrement = () => {
@@ -250,15 +240,13 @@ export default function TabPanel (props) {
         } else if (index==1) {
             //week view
             currentDate.setDate(currentDate.getDate() + 7);
-            weekDate.setDate(currentDate.getDate() + 7);
+            weekDate.setDate(currentDate.getDate() + 6);
         } else if (index==2) {
             currentDate.setMonth(currentDate.getMonth() + 1);
             setDisplayMonth(months[currentDate.getMonth()]);
         } else {
             currentDate.setFullYear(currentDate.getFullYear() + 1);
         }
-
-        console.log('tomorrow: ', currentDate);
         setDateString(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
     }
 

@@ -67,16 +67,12 @@ function App() {
       await mySky.loadDacs(contentRecord);
 
       const checkLogIn = await mySky.checkLogin();
-      console.log('CHECKED LOG IN : ', checkLogIn);
       setMySky(mySky);
 
       if (checkLogIn) {
         const usrId = await mySky.userID();
         setUserID(usrId);
         getInitData(mySky, usrId);
-        //setLoggedIn(checkLogIn);
-
-        console.log('USER ID: ', usrId);
       } else {
         setLoading(false);
       }
@@ -87,10 +83,7 @@ function App() {
   }
   const getInitData = async (mySky, usrID) => {
     try {
-      console.log('USERID: ', usrID);
       const { data, dataLink } = await mySky.getJSON(dataDomain+'/path/'+usrID.toString()+'.json');
-      console.log('DATA RETRIEVED: ', data);
-      console.log('retrieved link: ', dataLink);
       if (data==null) {
         setInitData(mySky, usrID);
       } else {

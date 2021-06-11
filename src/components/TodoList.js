@@ -42,60 +42,10 @@ export default function TodoList (props) {
 
     useEffect(() => {
         //here we retrieve json with the users list of to-dos
-        console.log('TEST DATA', testData)
-        //getInitData();
     },[]);
     useEffect(() => {
         setActiveTheme(props.currentTheme);
     }, [props.currentTheme]);
-
-    const getInitData = async () => {
-        try {
-            console.log('USERID: ', userID);
-            const { data, dataLink } = await mySky.getJSON(dataDomain+'/path/'+userID.toString()+'.json');
-            console.log('DATA RETRIEVED: ', data);
-            console.log('retrieved link: ', dataLink);
-            if (data==null) {
-                setInitData();
-            } else {
-                setUserData(data);
-                setUserName(data.userName);
-                if(data.defaultTab) {
-                    setValue(data.defaultTab);
-                    setDefaultTab(data.defaultTab);
-                }
-                setLoading(false);
-            }
-        } catch (e) {
-            console.log('error retrieving JSON: ', e);
-        }
-    }
-    const setInitData = async () => {
-        try {
-            const initJSON = {
-                defaultTab: 0,
-                userName: 'New User',
-                todoItems: [
-                    {
-                        text: "Use TaSky!",
-                        date: (new Date).toISOString(),
-                        memo: "Start organizing your tasks using TaSky",
-                        completed: "false",
-                        pinned: "true"
-                    }
-                ]
-            };
-            setUserData(initJSON);
-            //dataDomain+'/path/test.json'
-            const {data, dataLink } = await mySky.setJSON(dataDomain+'/path/'+userID.toString()+'.json', initJSON);
-            setOpenModal(true);
-            setLoading(false);
-            console.log('SET DATA: ', data);
-            console.log('SET DATALINK: ', dataLink);
-        } catch (e) {
-            console.log('SET ERR: ', e);
-        }
-    }
 
     const handleTabChange = (e, i) => {
         setValue(i);
@@ -112,8 +62,6 @@ export default function TodoList (props) {
                 skylink: dataLink,
                 metadata: { action: actionString },
             });
-            console.log('MYSKY result: ', data);
-            //console.log('get json',await mySky.getJSON(dataDomain+'/'+userID+'.json'));
         } catch (e) {
             console.log('error: ', e);
         }
@@ -131,7 +79,6 @@ export default function TodoList (props) {
         if (userData.userTheme!=activeTheme.palette.type) {
             userDataNew.userTheme=activeTheme.palette.type;
         }
-        console.log('USERNAME', userDataNew);
         setUserData(userDataNew);
         setOpenModal(false);
         try {
