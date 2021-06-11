@@ -5,7 +5,7 @@ import { SkynetClient, Permission, PermCategory, PermType } from "skynet-js";
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Typography, Container, Button, CircularProgress} from '@material-ui/core';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { makeStyles, ThemeProvider, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
 import TodoList from "./components/TodoList";
 import { ContentRecordDAC } from "@skynetlabs/content-record-library";
 import logo from './resources/tasky_logo.png';
@@ -77,6 +77,8 @@ function App() {
         //setLoggedIn(checkLogIn);
 
         console.log('USER ID: ', usrId);
+      } else {
+        setLoading(false);
       }
 
     } catch (e) {
@@ -117,8 +119,8 @@ function App() {
             text: "Use TaSky!",
             date: (new Date).toISOString(),
             memo: "Start organizing your tasks using TaSky",
-            completed: "false",
-            pinned: "true"
+            completed: false,
+            pinned: true
           }
         ]
       };
@@ -128,9 +130,6 @@ function App() {
       //setOpenModal(true);
       setLoggedIn(true);
       setLoading(false);
-      //setLoading(false);
-      console.log('SET DATA: ', data);
-      console.log('SET DATALINK: ', dataLink);
     } catch (e) {
       console.log('SET ERR: ', e);
     }
@@ -146,8 +145,10 @@ function App() {
     await mySky.addPermissions(new Permission('localhost', 'localhost/path', PermCategory.Discoverable, PermType.Write));
     mySky.requestLoginAccess().then(async result => {
       if (result) {
-        setUserID(await mySky.userID());
-        setLoggedIn(true);
+        setLoading(true);
+        const usrID = await mySky.userID();
+        getInitData(mySky, usrID);
+        setUserID(usrID);
       }
     });
 
@@ -155,12 +156,9 @@ function App() {
   }
 
   const performLogout = async () => {
-    if (!initMount) {
-      //await mySky.logout();
-    }
-
-    //setLoggedIn(false);
-    //setUserID('');
+    await mySky.logout();
+    setLoggedIn(false);
+    setUserID('');
   }
   const changeTheme = async () => {
     if (currentTheme.palette.type==='light') {
@@ -183,9 +181,9 @@ function App() {
             ):(
                 <>
                   <div style={{display:'flex', width:'100%', alignItems:'center', justifyContent:'center'}}>
-                    <img src={logo} style={{height:75, aspectRatio:1, margin:4}}/>
+                    <img src={logo} style={{height:120, aspectRatio:1, margin:4, marginTop:14}}/>
                   </div>
-                  <Typography color={'primary'} align={'center'} component="h1" variant="h5">
+                  <Typography color={'primary'} align={'center'} component="h1" variant="h3">
                     TaSky
                   </Typography>
                   <Typography align={'center'} variant="subtitle1">
@@ -196,8 +194,10 @@ function App() {
                         <CircularProgress/>
                       </div>
                   ):(
-                      <Button onClick={initiateLogin} fullWidth
+                      <div style={{display:'flex', alignContent:'center', justifyContent:'center', margin:14, paddingLeft:15, paddingRight:15}}>
+                        <Button onClick={initiateLogin} fullWidth
                               variant={'contained'} color={'primary'}>Login</Button>
+                      </div>
                   )}
 
                 </>

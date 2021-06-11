@@ -1,8 +1,5 @@
 import React, {useState,useEffect} from 'react';
-
-import { SkynetClient } from "skynet-js";
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { Typography, Container, Button, List, ListItem, ListItemIcon, Popper, Menu, MenuItem, Modal, Card,
+import { Typography, Container, Button, List, ListItem, ListItemIcon, Menu, MenuItem, Modal, Card,
     Checkbox, ListItemText, ListItemSecondaryAction, IconButton, TextField, makeStyles, CircularProgress,
     Grid, FormControlLabel } from '@material-ui/core';
 import {
@@ -18,8 +15,10 @@ import { MoreHoriz, LabelImportant, Note, Delete, ChevronLeft, ChevronRight } fr
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 let currentDate = new Date();
+let weekDate = new Date();
+weekDate.setDate(currentDate.getDate()+7);
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+//const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +75,7 @@ export default function TabPanel (props) {
     //date displays
     const [dateString, setDateString] = useState(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
     const [displayMonth, setDisplayMonth] = useState(months[currentDate.getMonth()]);
+    //const [weekDate, setWeekDate] = useState(new Date().setDate(currentDate.getDate()+7));
 
     useEffect(() => {
         //console.log('date string', dateString);
@@ -98,6 +98,8 @@ export default function TabPanel (props) {
         setShowAdvanced(false);
         setTaskMemo(null);
         setTaskText(null);
+        currentDate = new Date();
+        weekDate.setDate(currentDate.getDate()+7);
     }, [value]);
 
     const checkDate = (d) => {
@@ -232,6 +234,7 @@ export default function TabPanel (props) {
             currentDate.setDate(currentDate.getDate() - 1);
         } else if (index==1) {
             currentDate.setDate(currentDate.getDate() - 7);
+            weekDate.setDate(currentDate.getDate() + 7);
         } else if (index==2) {
             currentDate.setMonth(currentDate.getMonth() - 1);
             setDisplayMonth(months[currentDate.getMonth()]);
@@ -245,7 +248,9 @@ export default function TabPanel (props) {
         if (index==0) {
             currentDate.setDate(currentDate.getDate() + 1);
         } else if (index==1) {
+            //week view
             currentDate.setDate(currentDate.getDate() + 7);
+            weekDate.setDate(currentDate.getDate() + 7);
         } else if (index==2) {
             currentDate.setMonth(currentDate.getMonth() + 1);
             setDisplayMonth(months[currentDate.getMonth()]);
@@ -274,7 +279,8 @@ export default function TabPanel (props) {
                 ):index==1 ? (
                     <div>
                         <Typography align={'center'} variant={'h5'} >{dateString[0]}</Typography>
-                        <Typography align={'center'} variant={'subtitle1'} >{dateString[1]+', '+dateString[2]}</Typography>
+                        <Typography align={'center'} variant={'subtitle1'} >{dateString[1]+' - ' +
+                        (currentDate.getMonth()!=weekDate.getMonth() ? months[weekDate.getMonth()]+' ' : '') + weekDate.getDate()}</Typography>
                     </div>
                 ):index==2 ? (
                     <div>
@@ -296,8 +302,8 @@ export default function TabPanel (props) {
             </Grid>
 
 
-            <form id={'new-task-form'} className={classes.root} noValidate autoComplete="off">
-                <TextField id="outlined-basic" onFocus={handleTextFocus} onChange={handleNewTextChange}
+            <form id={'new-task-form'+index.toString()} className={classes.root} noValidate autoComplete="off">
+                <TextField id={"outlined-basic"+index.toString()} onFocus={handleTextFocus} onChange={handleNewTextChange}
                         placeholder="Add a task..." variant="outlined" />
                 {showAdvanced ? (
                     <>
@@ -352,7 +358,7 @@ export default function TabPanel (props) {
                                 setShowAdvanced(false);
                                 setTaskText(null);
                                 setTaskMemo(null);
-                                document.getElementById('new-task-form').reset();
+                                document.getElementById('new-task-form'+index.toString()).reset();
                             }}
                                 variant={'contained'} >Cancel</Button>
                             <Button onClick={handleCreateNewTask} variant={'contained'} color={'primary'}>Save</Button>

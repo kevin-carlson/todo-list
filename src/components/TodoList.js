@@ -1,7 +1,4 @@
 import React, {useState,useEffect} from 'react';
-
-import { SkynetClient } from "skynet-js";
-import CssBaseline from '@material-ui/core/CssBaseline';
 import {
     Typography,
     Container,
@@ -18,7 +15,7 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css';
 import testData from '../resources/testData.json';
 import TabPanel from "./TabPanel";
-import {Edit, Settings} from "@material-ui/icons";
+import {Settings} from "@material-ui/icons";
 import logo from '../resources/tasky_logo.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -221,7 +218,7 @@ export default function TodoList (props) {
                             <FormControlLabel control={<Switch checked={activeTheme.palette.type=='dark'} onChange={changeTheme} name="themeSwitch" />}
                                               label={'Dark Mode'} />
                         </FormGroup>
-                        <Typography align={'center'} variant={'subtitle2'} style={{marginBottom:10}} >Change you username for Tasky</Typography>
+                        <Typography align={'center'} variant={'subtitle2'} style={{marginBottom:10}} >Change you username for TaSky</Typography>
                         <TextField id={'memoEdit'} onChange={handleUsernameChange} fullWidth style={{marginBottom:10}} value={userName}
                                    placeholder={'Enter username...'} variant="outlined" />
                         <Grid container justify={'space-around'}>
