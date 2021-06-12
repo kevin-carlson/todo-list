@@ -2,7 +2,7 @@
 
 A simple and secured To-Do List built on Skynet.
 
-## Sign In using MySky
+### Sign In using MySky
 
 Use your MySky seed to login and manage your tasks accross devices.
 
