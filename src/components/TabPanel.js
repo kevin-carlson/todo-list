@@ -54,14 +54,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function TabPanel (props) {
     //index 0=day view, 1=week, 2=month, 3=year
-    const {value, index, updateMySky} = props;
-    const [data, setData] = useState(props.data);
+    const {value, index, updateMySky, userData} = props;
+    const [data, setData] = useState(userData);
     const [showAdvanced, setShowAdvanced] = useState(false);
     const classes = useStyles();
     const [popAnchor,setPopAnchor] = useState(null);
     const [menuIndex, setMenuIndex] = useState(0);
     const [isLoading, setLoading] = useState(true);
-    const [noTodo, setNoTodo] = useState(false);
+    const [noTodo, setNoTodo] = useState(true);
 
     //create new task states
     const [taskDate, setTaskDate] = useState(new Date());
@@ -78,20 +78,23 @@ export default function TabPanel (props) {
     const [displayMonth, setDisplayMonth] = useState(months[currentDate.getMonth()]);
 
     useEffect(() => {
-        setData(props.data);
-        if (props.data[0]!=null) {
-            if (props.data[0].pinned!=null){
+        if (props.userData[0]!=null) {
+            if (props.userData[0].pinned!=null){
                 setLoading(false);
                 setNoTodo(false);
             }
         } else {
             setNoTodo(true);
         }
+        setData(props.userData);
 
 
-    },[props.data]);
+    },[props.userData]);
 
     useEffect(()=> {
+        if (data[0]==null){
+            setNoTodo(true);
+        }
         setShowAdvanced(false);
         setTaskMemo(null);
         setTaskText(null);
@@ -432,7 +435,7 @@ export default function TabPanel (props) {
                     <CircularProgress/>
                 </div>
             )}
-            {!isLoading && !noTodo ? (
+            {data[menuIndex]!=null ? (
                 <Menu
                     id="simple-menu"
                     anchorEl={popAnchor}
@@ -468,7 +471,7 @@ export default function TabPanel (props) {
                     </MenuItem>
                 </Menu>
             ):null}
-            {!isLoading && !noTodo ? (
+            {data[menuIndex] ? (
                 <Modal open={openModal}
                        className={classes.modal}
                 >

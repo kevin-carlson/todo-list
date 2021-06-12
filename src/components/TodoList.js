@@ -57,7 +57,7 @@ export default function TodoList (props) {
     const updateMySky = async (dataNew, actionString) => {
         let userDataNew = userData;
         userDataNew.todoItems = dataNew;
-        setUserData(userDataNew);
+        setUserData({...userDataNew});
         try {
             const {data, dataLink} = await mySky.setJSON(dataDomain+'/path/'+userID.toString()+'.json', userDataNew);
             await contentRecord.recordInteraction({
@@ -135,10 +135,10 @@ export default function TodoList (props) {
                         <Tab label={'Year'} style={{ minWidth: 50 }}/>
                     </Tabs>
                 </AppBar>
-                <TabPanel data={userData.todoItems} updateMySky={updateMySky} value={value} index={0}/>
-                <TabPanel data={userData.todoItems} updateMySky={updateMySky} value={value} index={1}/>
-                <TabPanel data={userData.todoItems} updateMySky={updateMySky} value={value} index={2}/>
-                <TabPanel data={userData.todoItems} updateMySky={updateMySky} value={value} index={3}/>
+                <TabPanel userData={userData.todoItems} updateMySky={updateMySky} value={value} index={0}/>
+                <TabPanel userData={userData.todoItems} updateMySky={updateMySky} value={value} index={1}/>
+                <TabPanel userData={userData.todoItems} updateMySky={updateMySky} value={value} index={2}/>
+                <TabPanel userData={userData.todoItems} updateMySky={updateMySky} value={value} index={3}/>
 
 
 
