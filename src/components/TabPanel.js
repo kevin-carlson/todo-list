@@ -79,7 +79,6 @@ export default function TabPanel (props) {
 
     useEffect(() => {
         setData(props.data);
-        setNoTodo(true);
         if (props.data[0]!=null) {
             if (props.data[0].pinned!=null){
                 setLoading(false);
@@ -191,6 +190,7 @@ export default function TabPanel (props) {
         setMenuIndex(0);
         if (dataNew.length == 0) {
             setNoTodo(true);
+            setLoading(true);
         }
         setData(dataNew);
         setPopAnchor(null);
