@@ -2,7 +2,7 @@
 
 A simple and secured To-Do List built on Skynet.
 
-Skylink: [https://000883c8bdsht2bg6vie8q0oh1bjb2ucthl54dn3hi46edk6k881cvo.siasky.net/](https://000883c8bdsht2bg6vie8q0oh1bjb2ucthl54dn3hi46edk6k881cvo.siasky.net/)
+Skylink: [https://0009rs0k0d27lgqsa57dncodl885443r8268qp51bm429s37m03nolg.siasky.net/](https://0009rs0k0d27lgqsa57dncodl885443r8268qp51bm429s37m03nolg.siasky.net/)
 
 ### Sign In using MySky
 
