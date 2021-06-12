@@ -45,15 +45,8 @@ function App() {
   const [userID, setUserID] = useState();
   const [mySky, setMySky] = useState();
   const [userData, setUserData] = useState();
-  const [initMount, setInitMount] = useState(true);
   const [isLoading, setLoading] = useState(true);
   const [currentTheme, setCurrentTheme] = useState(theme);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setInitMount(false);
-    },100)
-  },[]);
 
   const initMySky = async () => {
     try {
@@ -76,9 +69,14 @@ function App() {
       console.log(e);
     }
   }
+  /**
+   * Call getJSON() to retrieve userData
+   * @param mySky
+   * @param {string} usrID
+   */
   const getInitData = async (mySky, usrID) => {
     try {
-      const { data, dataLink } = await mySky.getJSON(dataDomain+'/path/'+usrID.toString()+'.json');
+      const { data, dataLink } = await mySky.getJSON(dataDomain+'/path/'+usrID+'.json');
       if (data==null) {
         setInitData(mySky, usrID);
       } else {
@@ -96,6 +94,11 @@ function App() {
       console.log('error retrieving JSON: ', e);
     }
   }
+  /**
+   * set Default data if user new to TaSky
+   * @param mySky
+   * @param {string} usrID
+   */
   const setInitData = async (mySky, usrID) => {
     try {
       const initJSON = {
@@ -113,8 +116,7 @@ function App() {
         ]
       };
       setUserData(initJSON);
-      const {data, dataLink } = await mySky.setJSON(dataDomain+'/path/'+usrID.toString()+'.json', initJSON);
-      //setOpenModal(true);
+      const {data, dataLink } = await mySky.setJSON(dataDomain+'/path/'+usrID+'.json', initJSON);
       setLoggedIn(true);
       setLoading(false);
     } catch (e) {
@@ -127,7 +129,7 @@ function App() {
   }, []);
 
 
-
+  //call on Login button press
   const initiateLogin = async () => {
     await mySky.addPermissions(new Permission('tasky', 'tasky/path', PermCategory.Discoverable, PermType.Write));
     mySky.requestLoginAccess().then(async result => {

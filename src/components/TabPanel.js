@@ -70,14 +70,14 @@ export default function TabPanel (props) {
     const [isOngoing, setOngoing] = useState(false);
     const [pinNew, setPinNew] = useState(false);
 
-    //add/edit memo modal
+    //add,edit memo modal
     const [openModal, setOpenModal] = useState(false);
+
     //date displays
     const [dateString, setDateString] = useState(currentDate.toLocaleDateString(undefined, options).split(', ', 3));
     const [displayMonth, setDisplayMonth] = useState(months[currentDate.getMonth()]);
 
     useEffect(() => {
-        //here we retrieve json with the users list of to-dos
         setData(props.data);
         setNoTodo(true);
         if (props.data[0]!=null) {
@@ -97,6 +97,7 @@ export default function TabPanel (props) {
         setTaskMemo(null);
         setTaskText(null);
         currentDate = new Date();
+        //if week tab selected
         if (value == 1) {
             currentDate.setHours(0,0,0);
         }
@@ -104,9 +105,12 @@ export default function TabPanel (props) {
         weekDate.setDate(currentDate.getDate()+6);
     }, [value]);
 
+    /**
+     * Check if should display task based on date
+     * @param {string} d ISO date string of the task
+     * @returns {boolean}
+     */
     const checkDate = (d) => {
-        //check if the date for the item fits within the tabs timeframe
-        //ie day, week, month, or year
         const displayDate = currentDate.toLocaleDateString(undefined, options);
         const dateArr = displayDate.split(', ', 3);
         const d1 = new Date(d);
@@ -128,6 +132,7 @@ export default function TabPanel (props) {
                 return true;
             }
         } else {
+            //year view
             if (dateArr[2]==taskDateArr[2]) {
                 return true;
             }

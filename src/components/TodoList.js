@@ -33,16 +33,13 @@ export default function TodoList (props) {
     const { mySky, userID, dataDomain, contentRecord, performLogout, data, currentTheme, changeTheme} = props;
     const [value, setValue] = useState(data.defaultTab);
     const [userData, setUserData] = useState(data);
-    const [isLoading, setLoading] = useState(false);
     const classes = useStyles();
     const [openModal, setOpenModal] = useState(userData.userName=='New User');
     const [userName, setUserName] = useState(data.userName);
     const [defaultTab, setDefaultTab] = useState(0);
     const [activeTheme, setActiveTheme] = useState(currentTheme);
 
-    useEffect(() => {
-        //here we retrieve json with the users list of to-dos
-    },[]);
+
     useEffect(() => {
         setActiveTheme(props.currentTheme);
     }, [props.currentTheme]);
@@ -51,8 +48,13 @@ export default function TodoList (props) {
         setValue(i);
     }
 
+    /**
+     * Used to edit todoItems key of user's JSON
+     *
+     * @param {array} dataNew Array of updated todoItems
+     * @param {string} actionString String describing what was updated, used for contentRecord
+     */
     const updateMySky = async (dataNew, actionString) => {
-        //here we update the list of todos with mySky.setJSON()
         let userDataNew = userData;
         userDataNew.todoItems = dataNew;
         setUserData(userDataNew);
@@ -70,7 +72,11 @@ export default function TodoList (props) {
     const handleUsernameChange = (event) => {
         setUserName(event.target.value);
     }
-    const handleUpdateUsername = async () => {
+    /**
+     * Saves user metadata to mysky
+     * @returns {Promise<void>}
+     */
+    const handleUpdateMetadata = async () => {
         let userDataNew = userData;
         userDataNew.userName = userName;
         if (userData.defaultTab!=defaultTab) {
@@ -115,7 +121,7 @@ export default function TodoList (props) {
 
             </Grid>
             <Typography align={'center'} component="h1" variant="h5" style={{marginBottom:10}}>
-                {!isLoading ? 'Hello, '+userData.userName+'.' : ' '}
+                {'Hello, '+userData.userName+'.'}
             </Typography>
 
 
@@ -173,7 +179,7 @@ export default function TodoList (props) {
                                 setOpenModal(false);
                             }}
                                     variant={'contained'} >Cancel</Button>
-                            <Button onClick={handleUpdateUsername} variant={'contained'} color={'primary'}>Save</Button>
+                            <Button onClick={handleUpdateMetadata} variant={'contained'} color={'primary'}>Save</Button>
                         </Grid>
                     </Card>
 
